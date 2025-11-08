@@ -1,0 +1,8 @@
+# Ignore CMake build folders
+build/
+install/
+CMakePresets.json
+
+# Ignore Visual Studio files
+.vscode/
+
