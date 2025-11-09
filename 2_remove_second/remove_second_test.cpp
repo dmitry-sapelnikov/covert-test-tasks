@@ -79,7 +79,7 @@ void run_validation_tests(
 	\brief Run performance tests on the provided functions,
 	also checking for correctness
 */
-int run_performance_tests(
+void run_performance_tests(
 	const std::vector<test_function_type> &functions)
 {
 	constexpr std::array<size_t, 6> PERFORMANCE_TEST_SIZES = {
