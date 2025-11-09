@@ -33,10 +33,12 @@ void remove_second_using_remove_if(std::vector<T> &target)
 	// Optionally we may add shrink_to_fit() here
 }
 
-///	Removes every second element from the input vector using C++23 ranges
+///	Removes every second element from the input vector using C++23 std::views::stride
 template <typename T>
 void remove_second_using_ranges(std::vector<T> &target)
 {
 	std::ranges::move(target | std::views::stride(2), target.begin());
+	
+	// We may use shrink_to_fit() instead of resize()
 	target.resize((target.size() / 2) + (target.size() % 2));
 }
