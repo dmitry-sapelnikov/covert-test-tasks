@@ -2,20 +2,21 @@
 #include <memory>
 #include <iostream>
 
+/// Control block to manage reference counting
 class ControlBlock
 {
 public:
-	/// Increment the strong reference count if it's not zero
+	/// Increments the strong reference count if it's not zero
 	bool increment_strong_ref_not_zero() noexcept
 	{
 		long int count = m_ref_counter.load(std::memory_order_relaxed);
 		while (count != 0)
 		{
 			if (m_ref_counter.compare_exchange_weak(
-				count,
-				count + 1,
-				std::memory_order_relaxed,
-				std::memory_order_relaxed))
+					count,
+					count + 1,
+					std::memory_order_relaxed,
+					std::memory_order_relaxed))
 			{
 				return true;
 			}
@@ -33,18 +34,18 @@ public:
 
 	/// The strong reference counter
 	std::atomic<long int> m_ref_counter{1};
-	
+
 	// Here it should be weak ref counter to destruct
-	// the control block only after dereferencing of both 
+	// the control block only after dereferencing of both
 	// shared and weak pointers,
 	// but we omit it for simplicity
 };
-
 
 // Forward declaration
 template <typename T>
 class SharedPtr;
 
+/// WeakPtr class template
 template <typename T>
 class WeakPtr
 {
@@ -67,11 +68,13 @@ public:
 private:
 	friend class SharedPtr<T>;
 
+	/// Pointer to the control block
 	ControlBlock *m_control_block{nullptr};
 
 	// Here it should be pointer to T, but for simplicity we omit it
 };
 
+/// SharedPtr class template
 template <typename T>
 class SharedPtr
 {
@@ -81,8 +84,7 @@ public:
 
 	/// Constructor from raw pointer
 	/// Doesn't actually manage pointer to the object for simplicity
-	explicit SharedPtr(T *ptr) :
-		m_control_block(ptr != nullptr ? new ControlBlock() : nullptr)
+	explicit SharedPtr(T *ptr) : m_control_block(ptr != nullptr ? new ControlBlock() : nullptr)
 	{
 	}
 
@@ -98,7 +100,7 @@ public:
 	}
 
 	// Stubs for copy, move constructors and assignment operators
-	// It breaks the rule of 5 and should be implemented properly 
+	// It breaks the rule of 5 and should be implemented properly
 	// in a complete implementation
 	// We keep only the move constructor for simplicity
 	SharedPtr(SharedPtr &&) = default;
@@ -116,7 +118,7 @@ public:
 private:
 	friend class WeakPtr<T>;
 
-	/// Construct SharedPtr from WeakPtr
+	/// Constructs SharedPtr from WeakPtr
 	void construct_from_weak(const WeakPtr<T> &weak_ptr) noexcept
 	{
 		if (weak_ptr.m_control_block != nullptr &&
@@ -128,13 +130,14 @@ private:
 		}
 	}
 
+	/// Pointer to the control block
 	ControlBlock *m_control_block{nullptr};
 };
 
-/// WeakPtr constructor from SharedPtr
+// WeakPtr constructor from SharedPtr is defined outside the class definition
+// to break the circular dependency in WeakPtr and SharedPtr definitions
 template <typename T>
-WeakPtr<T>::WeakPtr(const SharedPtr<T> &sp) noexcept : 
-	m_control_block(sp.m_control_block)
+WeakPtr<T>::WeakPtr(const SharedPtr<T> &sp) noexcept : m_control_block(sp.m_control_block)
 {
 }
 
@@ -171,4 +174,3 @@ int main()
 
 	return 0;
 }
-
