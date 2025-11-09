@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
-project(covert_test_tasks LANGUAGES CXX)
+project(remove_second LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_subdirectory(1_weak_ptr_lock)
-add_subdirectory(2_remove_second)
+add_executable(weak_ptr_lock weak_ptr_lock.cpp)
