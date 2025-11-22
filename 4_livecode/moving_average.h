@@ -97,12 +97,12 @@ namespace moving_average
 
 			while (m_events.front().time < window_start)
 			{
-				if (m_last_popped_event.time != UNSET_TIME)
-				{
-					m_sum -=
-						m_last_popped_event.value *
-						(m_events.front().time - m_last_popped_event.time);
-				}
+				// The same branchless trick as above to avoid if condition
+				m_sum -=
+					(m_last_popped_event.time != UNSET_TIME) *
+					m_last_popped_event.value *
+					(m_events.front().time - m_last_popped_event.time);
+				
 				m_last_popped_event = m_events.front();
 				m_events.pop();
 			}
