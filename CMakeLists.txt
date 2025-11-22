@@ -7,3 +7,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(1_weak_ptr_lock)
 add_subdirectory(2_remove_second)
+add_subdirectory(4_livecode)
