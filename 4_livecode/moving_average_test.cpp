@@ -4,26 +4,26 @@
 namespace
 {
 
-/// Simple function to check equality of two floating-point numbers
-void check_equal(
-	double actual,
-	double expected, 
-	double epsilon = 1e-6)
-{
-	if (std::abs(expected - actual) > epsilon)
+	/// Simple function to check equality of two floating-point numbers
+	void check_equal(
+		double actual,
+		double expected,
+		double epsilon = 1e-6)
 	{
-		std::cerr << "Values are not equal: ";
-		std::cerr << "expected " << expected << " != actual " << actual << "\n";
+		if (std::abs(expected - actual) > epsilon)
+		{
+			std::cerr << "Values are not equal: ";
+			std::cerr << "expected " << expected << " != actual " << actual << "\n";
+		}
 	}
-}
 
-// end of anonymous namespace
+	// end of anonymous namespace
 }
 
 /// Test the MovingAverage class
 int main()
 {
-	// time:    0    1    2    3    4    5    6    7    8    9   10 
+	// time:    0    1    2    3    4    5    6    7    8    9   10
 	// value:   1    1    1    2    2    3    3    3    4    5    6
 	// average: 1            5/4       9/5           15/5 18/5 21/5
 
