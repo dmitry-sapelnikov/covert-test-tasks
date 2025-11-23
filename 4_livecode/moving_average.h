@@ -90,7 +90,8 @@ namespace moving_average
 			m_sum += value;
 
 			// timestamp >= m_window_size to set to zero in case of underflow
-			// in (timestamp - m_window_size) + 1 the parentheses are important to avoid underflow
+			// in (timestamp - m_window_size) + 1 the parentheses 
+			// are important to avoid underflow
 			const TimeT window_start =
 				((timestamp - m_window_size) + 1) *
 				(timestamp >= m_window_size);
@@ -145,5 +146,5 @@ namespace moving_average
 		ValueT m_sum{0};
 	};
 
-	// namespace moving_average
+// namespace moving_average
 }
