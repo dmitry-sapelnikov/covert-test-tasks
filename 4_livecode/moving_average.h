@@ -46,7 +46,7 @@ namespace moving_average
 		time  0 1 2 3
 		value 1 1 1 2
 
-		So the moving average for window with:
+		So the moving average returned by the call add_event(3, 2) for the window with
 		size = 1 is 2,
 		size = 2 is 3 / 2
 		size = 3 is 4 / 3
